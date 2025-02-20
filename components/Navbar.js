@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
-export default function TicketPage() {
+export default function Navbar() {
+  const router = useRouter();
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
-  
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest('.dropdown-container')) {
@@ -22,56 +24,86 @@ export default function TicketPage() {
     };
   }, []);
 
+  const handleLogout = () => {
+    localStorage.setItem("isLoggedIn", "false");
+    router.push("/");
+  };
+
   return (
-    <div>
-      <nav className="bg-gray-100 p-4 shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link className="text-lg font-semibold" href="/">Navbar</Link>
-          <button
-            className="md:hidden text-gray-700"
-            onClick={handleNavCollapse}
-            aria-expanded={!isNavCollapsed}
-            aria-label="Toggle navigation"
-          >
-            ☰
-          </button>
+    <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
+      <div className="container mx-auto flex justify-between items-center py-4 px-6">
+      
+        <Link href="/">
+          <img src="kumbhl.jpg" alt="Logo" className="h-16 w-20" />
+        </Link>
 
-          <div className={`${isNavCollapsed ? 'hidden' : 'block'} md:flex space-x-28`}>
-            <Link className="text-gray-700 hover:text-zinc-950 flex items-center space-x-2 hover:font-bold" href="/booking">
-              <img src="train.png" alt="train icon" className="h-6 w-6 rounded-full" />
-              <span>Train</span>
-            </Link>
-            <Link className="text-gray-700 hover:text-zinc-950 flex items-center space-x-2 hover:font-bold" href="/booking">
-              <img src="bus.png" alt="bus icon" className="h-6 w-6 rounded-full" />
-              <span>Bus</span>
-            </Link>
-            <Link className="text-gray-700 hover:text-zinc-950 flex items-center space-x-2 hover:font-bold" href="/booking">
-              <img src="metro.png" alt="metro icon" className="h-6 w-6 rounded-full" />
-              <span>Metro</span>
-            </Link>
-            <div className="relative dropdown-container">
-              <button
-                className="text-gray-700  hover:text-zinc-950 hover:font-bold"
-                onClick={toggleDropdown}
-              >
-                Dropdown
-              </button>
-              {isDropdownOpen && (
-                <ul className="absolute left-0 mt-2 w-40 bg-white border rounded-md shadow-lg">
-                  <li><Link className="block px-4 py-2 hover:bg-gray-200" href="about">About</Link></li>
-                  <li><Link className="block px-4 py-2 hover:bg-gray-200" href="contactus">help</Link></li>
-          
-                </ul>
-              )}
-            </div>
-          </div>
+        
+        <button
+          className="md:hidden text-gray-700 text-2xl"
+          onClick={handleNavCollapse}
+          aria-expanded={!isNavCollapsed}
+          aria-label="Toggle navigation"
+        >
+          ☰
+        </button>
 
-          <div className="flex space-x-2">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md"><Link href="/login">Login</Link></button>
-            <button className="bg-green-600 text-white px-4 py-2 rounded-md"><Link href="/signup">Signup</Link></button>
+        
+        <div className={`${isNavCollapsed ? 'hidden' : 'block'} md:flex space-x-20`}>
+          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="#">
+            <img src="train.png" alt="Train" className="h-6 w-6" />
+            <span>Train</span>
+          </Link>
+          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="#">
+            <img src="bus.png" alt="Bus" className="h-6 w-6" />
+            <span>Bus</span>
+          </Link>
+          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="#">
+            <img src="metro.png" alt="Metro" className="h-6 w-6" />
+            <span>Metro</span>
+          </Link>
+
+         
+          <div className="relative dropdown-container">
+            <button className="text-gray-700 hover:text-blue-600 font-medium" onClick={toggleDropdown}>
+              More ▼
+            </button>
+            {isDropdownOpen && (
+              <ul className="absolute left-0 mt-2 w-40 bg-white border rounded-md shadow-lg transition-all duration-300">
+                <li>
+                  <Link className="block px-4 py-2 hover:bg-gray-200" href="/about">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link className="block px-4 py-2 hover:bg-gray-200" href="/contactus">
+                    Help & Support
+                  </Link>
+                </li>
+              </ul>
+            )}
           </div>
         </div>
-      </nav>
-    </div>
+
+       
+        <div className="flex space-x-4">
+          <Link href="/login">
+            <button className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-5 py-2 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
+              Login
+            </button>
+          </Link>
+          <Link href="/signup">
+            <button className="bg-gradient-to-r from-green-500 to-teal-500 text-white px-5 py-2 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
+              Signup
+            </button>
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-5 py-2 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 }

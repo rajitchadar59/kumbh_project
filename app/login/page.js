@@ -9,7 +9,7 @@ const Login = () => {
   const router = useRouter();
 
   const handleLogin = async () => {
-    // Check if fields are empty
+    
     if (!username.trim() || !password.trim()) {
       alert("All fields are required!");
       return;
@@ -29,7 +29,7 @@ const Login = () => {
         setIsLogin(true);
         localStorage.setItem("isLoggedIn", "true");
         alert("Logged in successfully!");
-        router.push("/");
+        router.push("/booking");
       } else {
         console.log("Login failed");
         setIsLogin(false);
@@ -45,7 +45,7 @@ const Login = () => {
   };
 
   return (
-    <div className="font-bold h-auto flex text-black bg-[#f0f8ff] w-96 rounded-lg mx-auto border border-[#38a3a5] border-opacity-100 flex-col gap-4 p-6 shadow-lg mt-24">
+    <div className="font-bold h-auto flex text-black bg-[#f0f8ff] w-96 rounded-lg mx-auto border border-[#38a3a5] border-opacity-100 flex-col gap-4 p-6 shadow-lg mt-40">
       <h1 className="text-2xl my-4 flex justify-center text-[#22577a] font-extrabold">
         User Login
       </h1>

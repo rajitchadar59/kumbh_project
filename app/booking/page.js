@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-
+import { useRouter } from "next/navigation";
 const Booking = () => {
+  const router=useRouter();
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState("");
-  const [seatPreference, setSeatPreference] = useState("Window");
+  const [seatPreference, setSeatPreference] = useState("upper");
   const [transportMethod, setTransportMethod] = useState("Train"); 
   const [passengerName, setPassengerName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -42,6 +43,7 @@ const Booking = () => {
       if (result.success) {
         setBookingSuccess(true);
         alert("Ticket booked successfully!");
+        router.push("/qr");
       } else {
         setTicketsAvailable(false);
         alert("No tickets available for this route.");
@@ -53,7 +55,7 @@ const Booking = () => {
   };
 
   return (
-    <div className="font-bold h-auto flex text-black bg-[#f0f8ff] w-[450px] rounded-lg mx-auto border border-[#38a3a5] border-opacity-100 flex-col gap-4 p-6 shadow-lg mt-8">
+    <div className="font-bold h-auto flex text-black bg-[#f0f8ff] w-[450px] rounded-lg mx-auto border border-[#38a3a5] border-opacity-100 flex-col gap-4 p-6 shadow-lg mt-40">
       <h1 className="text-2xl my-4 flex justify-center text-[#22577a] font-extrabold">
         Book Your Ticket
       </h1>
@@ -103,9 +105,9 @@ const Booking = () => {
             onChange={(e) => setSeatPreference(e.target.value)}
             className="w-full rounded-lg h-10 bg-[#fff] text-black border border-[#38a3a5] px-4"
           >
-            <option value="Window">Window</option>
-            <option value="Aisle">Aisle</option>
-            <option value="Any">Any</option>
+            <option value="upper">Upper</option>
+            <option value="lower">Lower</option>
+            <option value="middle">Middle</option>
           </select>
         </div>
       </div>
@@ -158,15 +160,17 @@ const Booking = () => {
 
       {bookingSuccess && (
         <p className="text-green-600 font-semibold text-center">
-          ✅ Your ticket has been booked successfully!
+          ✅ Your ticket application has been send  successfully pay now!
         </p>
       )}
-
+    
       {!ticketsAvailable && (
         <p className="text-red-600 font-semibold text-center">
           ❌ No tickets available for this route.
         </p>
       )}
+
+     
     </div>
   );
 };

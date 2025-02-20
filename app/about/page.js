@@ -4,13 +4,13 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6 mt-20">
       <div className="max-w-3xl bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-3xl font-extrabold text-[#22577a] mb-4 text-center">
           About Our Ticketing System
         </h1>
 
-        {/* Problem Section */}
+        
         <section className="mb-6">
           <h2 className="text-xl font-bold text-[#38a3a5] mb-2">The Problem</h2>
           <p className="text-gray-700">

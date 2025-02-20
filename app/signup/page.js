@@ -57,7 +57,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="font-bold h-auto flex flex-col text-black bg-[#f0f8ff] w-96 rounded-lg mx-auto border border-[#38a3a5] border-opacity-100 p-6 shadow-lg mt-24">
+    <div className="font-bold h-auto flex flex-col text-black bg-[#f0f8ff] w-96 rounded-lg mx-auto border border-[#38a3a5] border-opacity-100 p-6 shadow-lg mt-40">
       <h1 className="text-2xl my-4 flex justify-center text-[#22577a] font-extrabold">
         Create Your Account
       </h1>
