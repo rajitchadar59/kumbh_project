@@ -2,7 +2,7 @@ import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 
 export const config = {
-  api: { bodyParser: false }, // Body Parser को बंद करें ताकि FormData हैंडल हो सके
+  api: { bodyParser: false }, 
 };
 
 export async function POST(req) {
@@ -16,7 +16,7 @@ export async function POST(req) {
       return NextResponse.json({ success: false, message: "All fields are required!" });
     }
 
-    // फाइल को `Buffer` में कन्वर्ट करें
+   
     const buffer = Buffer.from(await screenshot.arrayBuffer());
     const base64Image = buffer.toString("base64");
 
@@ -27,7 +27,7 @@ export async function POST(req) {
     await collection.insertOne({
       transactionId,
       name,
-      screenshot: `data:${screenshot.type};base64,${base64Image}`, // Base64 format में स्टोर करें
+      screenshot: `data:${screenshot.type};base64,${base64Image}`, 
       uploadedAt: new Date(),
     });
 

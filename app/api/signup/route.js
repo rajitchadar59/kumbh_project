@@ -6,7 +6,7 @@ const db =  client.db("kumbh")
 const collection = db.collection("users")
 
 const result = await collection.insertOne({
-    name:body.Name,
+    name:body.name,
     username:body.username,
     email:body.email,
     mobilenumber:body.mobilenumber,

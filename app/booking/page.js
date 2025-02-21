@@ -2,175 +2,123 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+
 const Booking = () => {
-  const router=useRouter();
-  const [source, setSource] = useState("");
-  const [destination, setDestination] = useState("");
-  const [date, setDate] = useState("");
-  const [seatPreference, setSeatPreference] = useState("upper");
-  const [transportMethod, setTransportMethod] = useState("Train"); 
-  const [passengerName, setPassengerName] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [ticketsAvailable, setTicketsAvailable] = useState(true);
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    source: "",
+    destination: "",
+    date: "",
+    seatPreference: "upper",
+    transportMethod: "Train",
+    passengerName: "",
+    mobileNumber: "",
+  });
+
+  const [availableSeats, setAvailableSeats] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSeats = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/checkAvailability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      setAvailableSeats(result.seatsAvailable);
+    } catch (error) {
+      setAvailableSeats(0);
+    }
+    setLoading(false);
+  };
+
   const handleBooking = async () => {
-    if (!source || !destination || !date || !passengerName || !mobileNumber || !transportMethod) {
+    if (Object.values(formData).some((field) => field.trim() === "")) {
       alert("Please fill all fields.");
       return;
     }
 
-    const bookingDetails = {
-      source,
-      destination,
-      date,
-      seatPreference,
-      transportMethod,
-      passengerName,
-      mobileNumber,
-    };
+    if (availableSeats === null || availableSeats <= 0) {
+      alert("No seats available. Please check availability first.");
+      return;
+    }
 
     try {
-      const response = await fetch("http://localhost:3000/api/bookticket", {
+      const response = await fetch("/api/bookticket", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingDetails),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
       const result = await response.json();
       if (result.success) {
         setBookingSuccess(true);
-        alert("Ticket booked successfully!");
+        alert("Ticket booked request send  successfully! Pay now.");
+        setAvailableSeats((prev) => Math.max(0, prev - 1));
         router.push("/qr");
       } else {
-        setTicketsAvailable(false);
-        alert("No tickets available for this route.");
+        alert("No tickets available.");
       }
     } catch (error) {
-      console.error("Booking failed:", error);
       alert("An error occurred. Please try again.");
     }
   };
 
   return (
-    <div className="font-bold h-auto flex text-black bg-[#f0f8ff] w-[450px] rounded-lg mx-auto border border-[#38a3a5] border-opacity-100 flex-col gap-4 p-6 shadow-lg mt-40">
-      <h1 className="text-2xl my-4 flex justify-center text-[#22577a] font-extrabold">
-        Book Your Ticket
-      </h1>
+    <div className="max-w-lg mx-auto bg-[#f0f8ff] border border-[#38a3a5] rounded-xl shadow-lg p-6 mt-40">
+      <h1 className="text-2xl font-extrabold text-center text-[#22577a] mb-4">Book Your Ticket</h1>
 
-      
-      <div className="flex gap-4">
-        <div className="w-1/2">
-          <label className="text-[#38a3a5] font-semibold">From</label>
-          <input
-            value={source}
-            onChange={(e) => setSource(e.target.value)}
-            className="w-full rounded-lg h-10 bg-[#fff] text-black border border-[#38a3a5] px-4"
-            type="text"
-            placeholder="Enter Source"
-            required
-          />
+    
+      <div className="flex flex-col gap-y-4">
+        <div className="flex gap-4">
+          <input name="source" value={formData.source} onChange={handleChange} className="w-1/2 border rounded-lg p-2" type="text" placeholder="From" required />
+          <input name="destination" value={formData.destination} onChange={handleChange} className="w-1/2 border rounded-lg p-2" type="text" placeholder="To" required />
         </div>
-        <div className="w-1/2">
-          <label className="text-[#38a3a5] font-semibold">To</label>
-          <input
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            className="w-full rounded-lg h-10 bg-[#fff] text-black border border-[#38a3a5] px-4"
-            type="text"
-            placeholder="Enter Destination"
-            required
-          />
-        </div>
-      </div>
 
-     
-      <div className="flex gap-4">
-        <div className="w-1/2">
-          <label className="text-[#38a3a5] font-semibold">Travel Date</label>
-          <input
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-lg h-10 bg-[#fff] text-black border border-[#38a3a5] px-4"
-            type="date"
-            required
-          />
-        </div>
-        <div className="w-1/2">
-          <label className="text-[#38a3a5] font-semibold">Seat Preference</label>
-          <select
-            value={seatPreference}
-            onChange={(e) => setSeatPreference(e.target.value)}
-            className="w-full rounded-lg h-10 bg-[#fff] text-black border border-[#38a3a5] px-4"
-          >
+        <div className="flex gap-4">
+          <input name="date" value={formData.date} onChange={handleChange} className="w-1/2 border rounded-lg p-2" type="date" required />
+          <select name="seatPreference" value={formData.seatPreference} onChange={handleChange} className="w-1/2 border rounded-lg p-2">
             <option value="upper">Upper</option>
             <option value="lower">Lower</option>
             <option value="middle">Middle</option>
           </select>
         </div>
-      </div>
 
-      <div className="w-full">
-        <label className="text-[#38a3a5] font-semibold">Transport Method</label>
-        <select
-          value={transportMethod}
-          onChange={(e) => setTransportMethod(e.target.value)}
-          className="w-full rounded-lg h-10 bg-[#fff] text-black border border-[#38a3a5] px-4"
-        >
+        <select name="transportMethod" value={formData.transportMethod} onChange={handleChange} className="w-full border rounded-lg p-2">
           <option value="Train">Train</option>
           <option value="Metro">Metro</option>
           <option value="Bus">Bus</option>
         </select>
-      </div>
 
-      
-      <div className="flex gap-4">
-        <div className="w-1/2">
-          <label className="text-[#38a3a5] font-semibold">Passenger Name</label>
-          <input
-            value={passengerName}
-            onChange={(e) => setPassengerName(e.target.value)}
-            className="w-full rounded-lg h-10 bg-[#fff] text-black border border-[#38a3a5] px-4"
-            type="text"
-            placeholder="Enter Name"
-            required
-          />
+        <div className="flex gap-4">
+          <input name="passengerName" value={formData.passengerName} onChange={handleChange} className="w-1/2 border rounded-lg p-2" type="text" placeholder="Passenger Name" required />
+          <input name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} className="w-1/2 border rounded-lg p-2" type="text" placeholder="Mobile No." required />
         </div>
-        <div className="w-1/2">
-          <label className="text-[#38a3a5] font-semibold">Mobile Number</label>
-          <input
-            value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
-            className="w-full rounded-lg h-10 bg-[#fff] text-black border border-[#38a3a5] px-4"
-            type="text"
-            placeholder="Enter Mobile No."
-            required
-          />
-        </div>
+
+        <button onClick={handleSeats} disabled={loading} className="h-12 bg-[#57cc99] w-full rounded-full text-white font-bold shadow-md hover:bg-[#38a3a5] transition">
+          {loading ? "Checking..." : "Check Availability"}
+        </button>
+
+        {availableSeats !== null && (
+          <p className={`text-center font-semibold ${availableSeats > 0 ? "text-green-600" : "text-red-600"}`}>
+            {availableSeats > 0 ? `${availableSeats} seats available` : "No seats available"}
+          </p>
+        )}
+
+        <button onClick={handleBooking} disabled={availableSeats === null || availableSeats <= 0} className="h-12 bg-[#57cc99] w-full rounded-full text-white font-bold shadow-md hover:bg-[#38a3a5] transition">
+          Book Ticket
+        </button>
+
+        {bookingSuccess && <p className="text-green-600 text-center font-semibold">✅ Ticket booked successfully!</p>}
       </div>
-
-      <button
-        onClick={handleBooking}
-        className="h-12 rounded-full flex justify-center items-center my-4 bg-[#57cc99] w-full hover:bg-[#38a3a5] text-white font-bold shadow-md transition duration-300"
-      >
-        Book Ticket
-      </button>
-
-      {bookingSuccess && (
-        <p className="text-green-600 font-semibold text-center">
-          ✅ Your ticket application has been send  successfully pay now!
-        </p>
-      )}
-    
-      {!ticketsAvailable && (
-        <p className="text-red-600 font-semibold text-center">
-          ❌ No tickets available for this route.
-        </p>
-      )}
-
-     
     </div>
   );
 };

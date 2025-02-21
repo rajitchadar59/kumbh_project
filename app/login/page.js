@@ -29,7 +29,7 @@ const Login = () => {
         setIsLogin(true);
         localStorage.setItem("isLoggedIn", "true");
         alert("Logged in successfully!");
-        router.push("/booking");
+        router.push("/");
       } else {
         console.log("Login failed");
         setIsLogin(false);

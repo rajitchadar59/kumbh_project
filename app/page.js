@@ -4,6 +4,14 @@ import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const router= useRouter();
+  const handleticket= () => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      router.push("/generateticket");
+    } else {
+      router.push("/login");
+    }
+  };
   const handletrynow = () => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     if (isLoggedIn === "true") {
@@ -38,6 +46,9 @@ export default function HomePage() {
                     Learn More
                   </button>
                 </Link>
+                <button onClick={()=>{handleticket()}} className="bg-blue-500 px-6 py-3 rounded-md font-medium text-white shadow-lg hover:bg-blue-700 transition">
+                    check ticket status
+                  </button>
               </div>
             </div>
             <div className="flex justify-center md:justify-end">

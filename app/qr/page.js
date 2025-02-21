@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 export default function PaymentPage() {
+    const router = useRouter();
   const [showQR, setShowQR] = useState(false);
   const [transactionId, setTransactionId] = useState("");
   const [name, setName] = useState("");
@@ -42,13 +43,15 @@ export default function PaymentPage() {
       setTransactionId("");
       setName("");
       setFile(null);
+      
     }
+    router.push("/");
   };
 
   return (
     <div className="flex flex-col items-center gap-4 p-5 mt-40">
       <button onClick={toggleQR} className="bg-blue-500 text-white px-4 py-2 rounded">
-        {showQR ? "Hide QR" : "Generate QR"}
+        {showQR ? "Hide QR" : "Pay Now Generate QR"}
       </button>
 
       {showQR && (
