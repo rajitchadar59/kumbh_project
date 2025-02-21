@@ -23,7 +23,7 @@ export default function TicketPage() {
       const data = await response.json();
       
       if (data.success) {
-        const seatNumber = generateRandomSeat(); // Generate a random seat number
+        const seatNumber = generateRandomSeat(); 
         setTicket({ ...data.ticket, seatNumber });
       } else {
         setError(data.message);
