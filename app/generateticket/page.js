@@ -96,7 +96,8 @@ export default function TicketPage() {
             <p><strong>Mobile Number:</strong> {ticket.mobileNumber}</p>
             <p><strong>Source:</strong> {ticket.source}</p>
             <p><strong>Destination:</strong> {ticket.destination}</p>
-            <p><strong>Amount Paid:</strong> ₹{ticket.amount}</p> {/* Added Amount */}
+            <p><strong>Amount Paid:</strong> ₹{ticket.amount}</p> 
+            <p><strong>status:</strong>success</p> 
           </div>
           <button
             onClick={generatePDF}
