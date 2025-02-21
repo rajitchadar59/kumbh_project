@@ -10,6 +10,12 @@ export default function TicketPage() {
   const [ticket, setTicket] = useState(null);
   const [error, setError] = useState("");
 
+  const generateRandomSeat = () => {
+    const row = Math.floor(Math.random() * 30) + 1; // Rows from 1 to 30
+    const seatLetter = ["A", "B", "C", "D", "E", "F"][Math.floor(Math.random() * 6)]; // Random seat A-F
+    return `${row}${seatLetter}`;
+  };
+
   const fetchTicket = async () => {
     try {
       setError("");
@@ -17,7 +23,8 @@ export default function TicketPage() {
       const data = await response.json();
       
       if (data.success) {
-        setTicket(data.ticket);
+        const seatNumber = generateRandomSeat(); // Generate a random seat number
+        setTicket({ ...data.ticket, seatNumber });
       } else {
         setError(data.message);
         setTicket(null);
@@ -48,7 +55,8 @@ export default function TicketPage() {
         ["Mobile Number", ticket.mobileNumber],
         ["Source", ticket.source],
         ["Destination", ticket.destination],
-        ["Amount Paid", `₹${ticket.amount}`], // Added Amount
+        ["Seat Number", ticket.seatNumber], 
+        ["Amount Paid", `₹${ticket.amount}`], 
         ["Payment Status", ticket.paymentStatus],
         ["Status", "✔ Success"],
       ],
@@ -96,8 +104,9 @@ export default function TicketPage() {
             <p><strong>Mobile Number:</strong> {ticket.mobileNumber}</p>
             <p><strong>Source:</strong> {ticket.source}</p>
             <p><strong>Destination:</strong> {ticket.destination}</p>
+            <p><strong>Seat Number:</strong> {ticket.seatNumber}</p> {/* ✅ Show seat number */}
             <p><strong>Amount Paid:</strong> ₹{ticket.amount}</p> 
-            <p><strong>status:</strong>success</p> 
+            <p><strong>Status:</strong> ✔ Success</p> 
           </div>
           <button
             onClick={generatePDF}
