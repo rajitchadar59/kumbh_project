@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "jspdf": "^3.0.0",
+    "jspdf-autotable": "^3.8.4",
     "mongodb": "^6.13.0",
     "next": "15.1.7",
     "react": "^19.0.0",

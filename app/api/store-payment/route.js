@@ -2,7 +2,7 @@ import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 
 export const config = {
-  api: { bodyParser: false }, 
+  api: { bodyParser: false },
 };
 
 export async function POST(req) {
@@ -10,16 +10,21 @@ export async function POST(req) {
     const formData = await req.formData();
     const transactionId = formData.get("transactionId");
     const name = formData.get("name");
+    const mobileNumber = formData.get("mobileNumber");
+    const source = formData.get("source");
+    const destination = formData.get("destination");
     const screenshot = formData.get("screenshot");
+    const amount = formData.get("amount"); // Fixed random amount
 
-    if (!transactionId || !name || !screenshot) {
+    if (!transactionId || !name || !mobileNumber || !source || !destination || !screenshot || !amount) {
       return NextResponse.json({ success: false, message: "All fields are required!" });
     }
 
-   
+    // Convert the uploaded image to base64
     const buffer = Buffer.from(await screenshot.arrayBuffer());
     const base64Image = buffer.toString("base64");
 
+    // Connect to MongoDB and store payment details
     const client = await clientPromise;
     const db = client.db("kumbh");
     const collection = db.collection("payments");
@@ -27,7 +32,11 @@ export async function POST(req) {
     await collection.insertOne({
       transactionId,
       name,
-      screenshot: `data:${screenshot.type};base64,${base64Image}`, 
+      mobileNumber,
+      source,
+      destination,
+      amount: parseInt(amount), 
+      screenshot: `data:${screenshot.type};base64,${base64Image}`,
       uploadedAt: new Date(),
     });
 
