@@ -49,15 +49,15 @@ export default function Navbar() {
 
         
         <div className={`${isNavCollapsed ? 'hidden' : 'block'} md:flex space-x-20`}>
-          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="#">
+          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="/generateticket">
             <img src="train.png" alt="Train" className="h-6 w-6" />
             <span>Train</span>
           </Link>
-          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="#">
+          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="/generateticket">
             <img src="bus.png" alt="Bus" className="h-6 w-6" />
             <span>Bus</span>
           </Link>
-          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="#">
+          <Link className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium" href="/generateticket">
             <img src="metro.png" alt="Metro" className="h-6 w-6" />
             <span>Metro</span>
           </Link>
