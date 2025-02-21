@@ -117,7 +117,7 @@ const Booking = () => {
           Book Ticket
         </button>
 
-        {bookingSuccess && <p className="text-green-600 text-center font-semibold">✅ Ticket booked successfully!</p>}
+        {bookingSuccess && <p className="text-green-600 text-center font-semibold">✅ Ticket booked request successfully!</p>}
       </div>
     </div>
   );
