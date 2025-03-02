@@ -74,7 +74,7 @@ const Booking = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white flex flex-col items-center justify-center p-10 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-black flex flex-col items-center justify-center p-10 relative overflow-hidden">
       
       {/* Animated Background Effect */}
       <motion.div 
@@ -86,7 +86,7 @@ const Booking = () => {
 
       {/* Main Booking Card */}
       <motion.div 
-        className="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-2xl shadow-lg w-96 text-white relative z-10"
+        className="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-2xl shadow-lg w-96 text-black relative z-10"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
@@ -98,14 +98,14 @@ const Booking = () => {
           
           {/* From - To */}
           <div className="flex gap-4">
-            <input name="source" value={formData.source} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="text" placeholder="From" required />
-            <input name="destination" value={formData.destination} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="text" placeholder="To" required />
+            <input name="source" value={formData.source} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-black placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="text" placeholder="From" required />
+            <input name="destination" value={formData.destination} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-black placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="text" placeholder="To" required />
           </div>
 
           {/* Date - Seat Preference */}
           <div className="flex gap-4">
-            <input name="date" value={formData.date} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="date" required />
-            <select name="seatPreference" value={formData.seatPreference} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-white focus:ring-2 focus:ring-blue-400">
+            <input name="date" value={formData.date} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-black placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="date" required />
+            <select name="seatPreference" value={formData.seatPreference} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-black focus:ring-2 focus:ring-blue-400">
               <option value="upper">Upper</option>
               <option value="lower">Lower</option>
               <option value="middle">Middle</option>
@@ -113,7 +113,7 @@ const Booking = () => {
           </div>
 
           {/* Transport Method */}
-          <select name="transportMethod" value={formData.transportMethod} onChange={handleChange} className="w-full border border-white/30 rounded-lg p-3 bg-transparent text-white focus:ring-2 focus:ring-blue-400">
+          <select name="transportMethod" value={formData.transportMethod} onChange={handleChange} className="w-full border border-white/30 rounded-lg p-3 bg-transparent text-black focus:ring-2 focus:ring-blue-400">
             <option value="Train">Train</option>
             <option value="Metro">Metro</option>
             <option value="Bus">Bus</option>
@@ -121,15 +121,15 @@ const Booking = () => {
 
           {/* Passenger Name - Mobile No */}
           <div className="flex gap-4">
-            <input name="passengerName" value={formData.passengerName} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="text" placeholder="Passenger Name" required />
-            <input name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="text" placeholder="Mobile No." required />
+            <input name="passengerName" value={formData.passengerName} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-black placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="text" placeholder="Passenger Name" required />
+            <input name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} className="w-1/2 border border-white/30 rounded-lg p-3 bg-transparent text-black placeholder-gray-300 focus:ring-2 focus:ring-blue-400" type="text" placeholder="Mobile No." required />
           </div>
 
           {/* Check Availability Button */}
           <motion.button 
             onClick={handleSeats} 
             disabled={loading} 
-            className="h-12 bg-blue-500 w-full rounded-full text-white font-bold shadow-lg hover:bg-blue-600 transition"
+            className="h-12 bg-blue-500 w-full rounded-full text-black font-bold shadow-lg hover:bg-blue-600 transition"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -147,7 +147,7 @@ const Booking = () => {
           <motion.button 
             onClick={handleBooking} 
             disabled={availableSeats === null || availableSeats <= 0} 
-            className="h-12 bg-green-500 w-full rounded-full text-white font-bold shadow-lg hover:bg-green-600 transition"
+            className="h-12 bg-green-500 w-full rounded-full text-black font-bold shadow-lg hover:bg-green-600 transition"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
