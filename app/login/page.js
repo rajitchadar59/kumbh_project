@@ -1,46 +1,43 @@
 "use client";
-import React, { useState } from "react";
+import { useSignIn } from "@clerk/nextjs";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
+  const { signIn, isLoaded } = useSignIn();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
-    
     if (!username.trim() || !password.trim()) {
       alert("All fields are required!");
       return;
     }
 
+    if (!isLoaded) {
+      alert("Authentication service is still loading. Please wait.");
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:3000/api/data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+      const result = await signIn.create({
+        identifier: username,
+        password,
       });
 
-      const result = await response.json();
-
-      if (result.success) {
+      if (result.status === "complete") {
         console.log("Logged in successfully");
-        setIsLogin(true);
-        localStorage.setItem("isLoggedIn", "true");
         alert("Logged in successfully!");
+
         router.push("/");
       } else {
-        console.log("Login failed");
-        setIsLogin(false);
-        localStorage.setItem("ishidden", "true");
+        console.log("Login failed:", result);
         alert("Invalid username or password");
-        setUsername("");
-        setPassword("");
       }
     } catch (error) {
-      console.error("Error logging in:", error);
-      alert("Something went wrong. Please try again.");
+      console.error("Error logging in:", error.errors);
+      alert(error.errors[0]?.message || "Something went wrong. Please try again.");
     }
   };
 

@@ -1,79 +1,72 @@
-'use client';
+"use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
-export default function HomePage() {
-  const router= useRouter();
-  const handleticket= () => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") {
-      router.push("/generateticket");
-    } else {
-      router.push("/login");
-    }
-  };
-  const handletrynow = () => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") {
-      router.push("/booking");
-    } else {
-      router.push("/login");
-    }
-  };
+export default function Home() {
+  const { isSignedIn, isLoaded } = useUser();
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white bg-gray-900">
+        <p className="text-lg animate-pulse">Loading...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white flex flex-col items-center justify-center p-10">
+      {/* Header Section */}
+      <h1 className="text-6xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-pink-500">
+        ✈️ Welcome to YatraNXT 🚆
+      </h1>
+      <p className="text-lg text-gray-300 text-center max-w-3xl mb-8">
+        Book tickets for trains, buses, and metros effortlessly. Secure, fast, and hassle-free travel at your fingertips!
+      </p>
 
-      <main className="flex-1">
-        <section className="w-full py-20 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-40">
-          <div className="container px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="text-center md:text-left space-y-4">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                Book Your Journey with Ease
-              </h1>
-              <p className="max-w-[700px] md:text-xl">
-                Find and book the best bus, train, and metro tickets for your travel needs.
-              </p>
-              <div className="flex justify-center md:justify-start space-x-4">
-                
-                  <button onClick={()=>{handletrynow()}} className="bg-white text-blue-600 px-6 py-3 rounded-md font-medium shadow-lg hover:bg-gray-200 transition">
-                    Get Started
-                  </button>
-                
-                <Link href="/about">
-                  <button className="bg-blue-500 px-6 py-3 rounded-md font-medium text-white shadow-lg hover:bg-blue-700 transition">
-                    Learn More
-                  </button>
-                </Link>
-                <button onClick={()=>{handleticket()}} className="bg-blue-500 px-6 py-3 rounded-md font-medium text-white shadow-lg hover:bg-blue-700 transition">
-                    check ticket status
-                  </button>
-              </div>
-            </div>
-            <div className="flex justify-center md:justify-end">
-              <img
-                src="kumbhlogo.webp"
-                alt="side image"
-                className="w-full max-w-sm rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </section>
-      </main>
+      {/* Features Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-5xl mb-12">
+        <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 hover:border-blue-400 transition">
+          <h3 className="text-2xl font-semibold text-blue-400 mb-3">🚆 Train Bookings</h3>
+          <p className="text-gray-400">Book your train tickets instantly with real-time seat availability.</p>
+        </div>
+        <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 hover:border-green-400 transition">
+          <h3 className="text-2xl font-semibold text-green-400 mb-3">🚌 Bus Tickets</h3>
+          <p className="text-gray-400">Find and book bus tickets easily across major routes.</p>
+        </div>
+        <div className="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 hover:border-yellow-400 transition">
+          <h3 className="text-2xl font-semibold text-yellow-400 mb-3">🚇 Metro Passes</h3>
+          <p className="text-gray-400">Get seamless access to metro travel with digital passes.</p>
+        </div>
+      </div>
 
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-gray-500">© 2025 yatranxt. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-xs hover:underline underline-offset-4 text-gray-600" href="/about">
-            Terms of Service
-          </Link>
-          <Link className="text-xs hover:underline underline-offset-4 text-gray-600" href="/">
-            Privacy
-          </Link>
-          <Link className="text-xs hover:underline underline-offset-4 text-gray-600" href="/contactus">
-            Cookies
-          </Link>
+      {/* Call-to-Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-6">
+        {isSignedIn ? (
+          <>
+            <Link
+              href="/booking"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium shadow-lg hover:scale-105 transition"
+            >
+              🎟️ Get Started
+            </Link>
+            <Link
+              href="/generateticket"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-gray-600 to-gray-800 text-white font-medium shadow-lg hover:scale-105 transition"
+            >
+              🔍 Check Ticket Status
+            </Link>
+          </>
+        ) : (
+          <p className="text-red-500 font-semibold text-lg">⚠️ Please log in to continue.</p>
+        )}
+      </div>
+
+      {/* Footer Section */}
+      <footer className="mt-16 text-gray-500 text-center">
+        <p className="text-sm">© 2025 YatraNXT. All rights reserved.</p>
+        <nav className="flex gap-4 justify-center mt-2">
+     
+          <Link className="text-sm hover:text-white transition" href="/contactus">Cookies</Link>
         </nav>
       </footer>
     </div>

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -16,7 +17,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/contact", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, message }),
@@ -33,22 +34,34 @@ const Signup = () => {
   };
 
   return (
-    <div className="p-6 bg-[#f0f8ff] rounded-lg border border-[#38a3a5] shadow-lg mt-20">
-      <h1 className="text-2xl text-[#22577a] font-extrabold text-center">Enter your query</h1>
-      <div className="grid grid-cols-2 gap-4 mt-4">
+    <motion.div 
+      className="p-8 bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-lg border border-gray-700 shadow-2xl text-white"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <h1 className="text-3xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">Enter Your Query</h1>
+      <div className="grid grid-cols-2 gap-4 mt-6">
         <div>
-          <label className="text-[#38a3a5] font-semibold">Name</label>
-          <input value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-lg h-10 bg-white border px-4" type="text" placeholder="Name" />
+          <label className="text-gray-400 font-semibold">Name</label>
+          <input value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-lg h-10 bg-gray-700 border border-gray-600 px-4 text-white" type="text" placeholder="Name" />
         </div>
         <div>
-          <label className="text-[#38a3a5] font-semibold">Email</label>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-lg h-10 bg-white border px-4" type="email" placeholder="Email" />
+          <label className="text-gray-400 font-semibold">Email</label>
+          <input value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-lg h-10 bg-gray-700 border border-gray-600 px-4 text-white" type="email" placeholder="Email" />
         </div>
       </div>
-      <label className="text-[#38a3a5] font-semibold mt-4">Message</label>
-      <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="w-full rounded-lg h-24 bg-white border px-4 py-2 mt-2" placeholder="Enter your message"></textarea>
-      <button onClick={handleSubmit} className="mt-4 w-full bg-[#57cc99] h-12 rounded-full text-white font-bold hover:bg-[#38a3a5] transition">Submit</button>
-    </div>
+      <label className="text-gray-400 font-semibold mt-4">Message</label>
+      <textarea value={message} onChange={(e) => setMessage(e.target.value)} className="w-full rounded-lg h-24 bg-gray-700 border border-gray-600 px-4 py-2 mt-2 text-white" placeholder="Enter your message"></textarea>
+      <motion.button 
+        onClick={handleSubmit} 
+        className="mt-4 w-full bg-blue-500 h-12 rounded-full text-white font-bold hover:bg-blue-600 transition-transform transform hover:scale-105"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        Submit
+      </motion.button>
+    </motion.div>
   );
 };
 
@@ -71,29 +84,46 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg h-full flex flex-col">
-      <h2 className="text-lg font-semibold text-center bg-green-600 text-white py-3">Ticket Booking Assistant</h2>
-      <div className="flex-grow overflow-y-auto p-4 bg-gray-100 space-y-2">
+    <motion.div 
+      className="p-8 bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-lg shadow-2xl text-white flex flex-col"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <h2 className="text-xl font-semibold text-center bg-gradient-to-r from-green-400 to-teal-400 text-transparent bg-clip-text py-3">Ticket Booking Assistant</h2>
+      <div className="flex-grow overflow-y-auto p-4 bg-gray-700 rounded-lg space-y-2">
         {messages.map((msg, index) => (
-          <div key={index} className={`max-w-[75%] p-3 rounded-lg text-sm ${msg.sender === "user" ? "bg-green-100 text-green-900 self-end" : "bg-gray-300 text-gray-800 self-start"}`}>
+          <motion.div 
+            key={index} 
+            className={`max-w-[75%] p-3 rounded-lg text-sm ${msg.sender === "user" ? "bg-green-500 text-white self-end" : "bg-gray-600 text-gray-100 self-start"}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             {msg.text}
-          </div>
+          </motion.div>
         ))}
       </div>
-      <div className="grid grid-cols-2 gap-2 p-3 bg-white">
+      <div className="grid grid-cols-2 gap-2 p-3 bg-transparent">
         {Object.keys(responses).map((question, index) => (
-          <button key={index} className="bg-green-500 text-white py-2 px-3 rounded-md text-xs hover:bg-green-700 transition-transform hover:scale-105" onClick={() => handleQuestionClick(question)}>
+          <motion.button 
+            key={index} 
+            className="bg-teal-500 text-white py-2 px-3 rounded-md text-xs hover:bg-teal-700 transition-transform"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handleQuestionClick(question)}
+          >
             {question}
-          </button>
+          </motion.button>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const HomePage = () => {
   return (
-    <div className="grid grid-cols-2 gap-6 p-10 min-h-screen bg-gray-50 mt-20">
+    <div className="grid grid-cols-2 gap-8 p-12 min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
       <Signup />
       <ChatBot />
     </div>
