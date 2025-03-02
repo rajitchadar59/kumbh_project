@@ -62,12 +62,11 @@ export default function Home() {
       </div>
 
       {/* Footer Section */}
-      <footer className="mt-16 text-gray-500 text-center">
+      <footer className="mt-40 text-gray-500 text-center flex justify-between items-center">
+        <div className="flex justify-start">
         <p className="text-sm">© 2025 YatraNXT. All rights reserved.</p>
-        <nav className="flex gap-4 justify-center mt-2">
-     
-          <Link className="text-sm hover:text-white transition" href="/contactus">Cookies</Link>
-        </nav>
+        </div>
+      
       </footer>
     </div>
   );

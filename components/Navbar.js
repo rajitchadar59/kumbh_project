@@ -64,6 +64,7 @@ export default function Navbar() {
           <Link className="hover:text-green-400 transition duration-300" href="/generateticket">Bus</Link>
           <Link className="hover:text-pink-400 transition duration-300" href="/generateticket">Metro</Link>
          
+         
           {/* Dropdown */}
           <div className="relative dropdown-container">
             <button className="hover:text-purple-400 transition duration-300" onClick={toggleDropdown}>
